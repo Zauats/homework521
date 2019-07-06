@@ -20,6 +20,8 @@ import java.io.OutputStreamWriter;
 
 public class MainActivity extends AppCompatActivity {
 
+    String PASSWORD_FILE_NAME = "password";
+    String LOGIN_FILE_NAME = "login";
     EditText password;
     EditText login;
     Button entry;
@@ -38,37 +40,22 @@ public class MainActivity extends AppCompatActivity {
         entry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FileInputStream fileInputStream = null;
-                try {
-                    fileInputStream = openFileInput("login_and_password");
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+                String loginText = readFile(LOGIN_FILE_NAME);
+                String passwordText = readFile(PASSWORD_FILE_NAME);
 
-                InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
-                BufferedReader reader = new BufferedReader(inputStreamReader);
-                String loginAndPassword = "";
-                try {
-                    loginAndPassword = reader.readLine();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                if (loginAndPassword.equals(login.getText().toString() + " " + password.getText().toString())){
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                    builder.setTitle("Важное сообщение!")
-                            .setMessage("вы вошли!")
+                if (loginText.equals(login.getText().toString()) & passwordText.equals(password.getText().toString())){
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setMessage(R.string.entry_true)
                             .setCancelable(false)
-                            .setNegativeButton("ОК",
+                            .setNegativeButton(R.string.button_OK,
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
                                             dialog.cancel();
                                         }
-                                    });
-                    AlertDialog alert = builder.create();
-                    alert.show();
+                                    })
+                            .create()
+                            .show();
                 }
-
-
             }
         });
     }
@@ -79,24 +66,48 @@ public class MainActivity extends AppCompatActivity {
             toast.show();
 
         }else{
-            FileOutputStream fileOutputStream = null;
-            try {
-                fileOutputStream = openFileOutput("login_and_password", MODE_PRIVATE);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream);
-            BufferedWriter bw = new BufferedWriter(outputStreamWriter);
-            try {
-                bw.write(login.getText().toString() + " " + password.getText().toString());
-                bw.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Toast toast = Toast.makeText(this, "Регистрация прошла успешно", Toast.LENGTH_LONG);
+            saveData(LOGIN_FILE_NAME, login.getText().toString());
+            saveData(PASSWORD_FILE_NAME, password.getText().toString());
+            Toast toast = Toast.makeText(this, R.string.registration_true, Toast.LENGTH_LONG);
             toast.show();
         }
     }
 
 
+    private String readFile(String fileName){
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new InputStreamReader(openFileInput(fileName)));
+            return reader.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void saveData(String fileName, String data) {
+        BufferedWriter writer = null;
+        try {
+            writer = new BufferedWriter(new OutputStreamWriter(openFileOutput(fileName, MODE_PRIVATE)));
+            writer.write(data);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (writer != null) {
+                    writer.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

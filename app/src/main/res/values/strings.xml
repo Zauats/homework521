@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">homework521</string>
     <string name="alert_message">Введите что-нибудь</string>
+    <string name="registration_true">Регистрация прошла успешно</string>
+    <string name="entry_true">Вы вошли!</string>
+    <string name="button_OK">ОК</string>
 </resources>
