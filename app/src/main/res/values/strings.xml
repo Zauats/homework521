@@ -4,4 +4,9 @@
     <string name="registration_true">Регистрация прошла успешно</string>
     <string name="entry_true">Вы вошли!</string>
     <string name="button_OK">ОК</string>
+    <string name="password">password</string>
+    <string name="login">login</string>
+    <string name="entry">Вход</string>
+    <string name="registration">Регистрация</string>
+
 </resources>

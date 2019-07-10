@@ -42,19 +42,20 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String loginText = readFile(LOGIN_FILE_NAME);
                 String passwordText = readFile(PASSWORD_FILE_NAME);
-
-                if (loginText.equals(login.getText().toString()) & passwordText.equals(password.getText().toString())){
-                    new AlertDialog.Builder(MainActivity.this)
-                            .setMessage(R.string.entry_true)
-                            .setCancelable(false)
-                            .setNegativeButton(R.string.button_OK,
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            dialog.cancel();
-                                        }
-                                    })
-                            .create()
-                            .show();
+                if (loginText != null & passwordText != null){
+                    if (loginText.equals(login.getText().toString()) & passwordText.equals(password.getText().toString())){
+                        new AlertDialog.Builder(MainActivity.this)
+                                .setMessage(R.string.entry_true)
+                                .setCancelable(false)
+                                .setNegativeButton(R.string.button_OK,
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                dialog.cancel();
+                                            }
+                                        })
+                                .create()
+                                .show();
+                    }
                 }
             }
         });
